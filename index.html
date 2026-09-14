@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pilsa — 좋은 문장을 손으로 천천히</title>
+<meta name="description" content="iPad와 Apple Pencil로 말씀과 영어 문장을 옮겨 쓰는 필사 노트. 하루 한 장, 조용히 써요.">
+<meta name="theme-color" content="#FBF6EC">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pilsa — 좋은 문장을 손으로 천천히">
+<meta property="og:description" content="iPad와 Apple Pencil로 말씀과 영어 문장을 옮겨 쓰는 필사 노트">
+<meta property="og:image" content="https://jsonpassion.github.io/pilsa-site/assets/og.png">
+<meta property="og:url" content="https://jsonpassion.github.io/pilsa-site/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&family=Nanum+Pen+Script&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF6EC; --desk: #F3EBDC; --card: #FFFCF5;
+    --ink: #3B3A36; --ink-soft: #5B4636; --muted: #8A7F6F; --rule: #E2D6C0;
+    --line: #5B4636; --shadow: rgba(91, 70, 54, .16);
+    --sage: #DDEBDD; --sage-s: #9CC5A1; --sage-i: #35603F;
+    --peach: #F9DEDB; --peach-s: #F2A7A1;
+    --mustard: #FBEBC2; --mustard-s: #F6C667;
+    --sky: #DCE9F5; --sky-s: #8FB8DE; --sky-i: #2F5577;
+    --tang: #F8E0CC; --tang-s: #E8A36D; --tang-i: #8A4A16;
+    --hl: #FFF3A3; --navy: #2F4858;
+    --f-display: "Gaegu", "Nanum Pen Script", cursive;
+    --f-body: "Gowun Dodum", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    --f-hand: "Nanum Pen Script", "Gaegu", cursive;
+    --f-hand-en: "Patrick Hand", "Gaegu", cursive;
+    --wrap: 1080px;
+    --gap: 16px;
+    --pad: 22px;
+    --radius: 22px 18px 24px 16px / 16px 24px 18px 22px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #2B2622; --desk: #221E1A; --card: #352F2A;
+      --ink: #EDE4D3; --ink-soft: #D9C7B0; --muted: #A79B8A; --rule: #4A4139;
+      --line: #D9C7B0; --shadow: rgba(0, 0, 0, .35);
+      --sage: #33423A; --sage-s: #6F9B76; --sage-i: #CFE6D3;
+      --peach: #4A3533; --peach-s: #B07A76;
+      --mustard: #4A4128; --mustard-s: #B69447;
+      --sky: #2F3B47; --sky-s: #6C8FB0; --sky-i: #CFE0F0;
+      --tang: #4A3526; --tang-s: #B87A4A; --tang-i: #F3D2B3;
+      --hl: #5C5128; --navy: #B9CBD9;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--f-body); color: var(--ink); background-color: var(--desk);
+    line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; word-break: keep-all; overflow-wrap: anywhere;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  /* ---------- 두들 기본 ---------- */
+  .doodle {
+    position: relative; background: var(--card); border-radius: var(--radius);
+    box-shadow: 3px 4px 0 var(--shadow);
+  }
+  .doodle::before {
+    content: ""; position: absolute; inset: 0; border: 2px solid var(--line); border-radius: inherit;
+    filter: url(#rough); pointer-events: none;
+  }
+  .btn {
+    position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 48px; padding: 0 22px; font-family: var(--f-display); font-weight: 700; font-size: 21px;
+    color: var(--ink); background: var(--card); border-radius: 18px 14px 20px 13px / 13px 20px 14px 18px;
+    box-shadow: 2px 3px 0 var(--shadow); text-decoration: none; transition: transform .15s ease, box-shadow .15s ease;
+    white-space: nowrap;
+  }
+  .btn::before { content: ""; position: absolute; inset: 0; border: 2px solid var(--line); border-radius: inherit; filter: url(#rough); pointer-events: none; }
+  .btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 4px 0 var(--shadow); }
+  .btn:active { transform: translate(2px, 3px); box-shadow: 0 0 0 var(--shadow); }
+  .btn.primary { background: var(--mustard); }
+  .btn.quiet { background: transparent; box-shadow: none; color: var(--muted); }
+  .btn.quiet::before { border-style: dashed; border-color: var(--muted); }
+  .btn svg { width: 20px; height: 20px; }
+
+  .icon-btn {
+    position: relative; width: 44px; height: 44px; display: inline-grid; place-items: center;
+    background: var(--card); border-radius: 50% 46% 52% 48% / 48% 52% 46% 50%;
+    box-shadow: 2px 2px 0 var(--shadow); transition: transform .15s ease, background .2s;
+  }
+  .icon-btn::before { content: ""; position: absolute; inset: 0; border: 2px solid var(--line); border-radius: inherit; filter: url(#rough); pointer-events: none; }
+  .icon-btn svg { width: 22px; height: 22px; }
+  .icon-btn:active { transform: translate(1px, 2px); box-shadow: 0 0 0 var(--shadow); }
+  .icon-btn[aria-pressed="true"] { background: var(--sky); }
+
+  .h-title {
+    font-family: var(--f-display); font-weight: 700; font-size: clamp(34px, 5vw, 48px); line-height: 1.15;
+    letter-spacing: -.1em; color: var(--ink);
+  }
+  .squiggle {
+    display: inline; padding-bottom: 6px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='10' viewBox='0 0 60 10'%3E%3Cpath d='M0 6 Q7.5 1 15 6 T30 6 T45 6 T60 6' fill='none' stroke='%239CC5A1' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left bottom / 40px 8px;
+  }
+  .lede { font-size: 17px; color: var(--ink-soft); max-width: 560px; margin-top: 14px; }
+  section { padding: 72px 0; scroll-margin-top: 56px; }
+  .eyebrow { font-family: var(--f-display); font-size: 20px; color: var(--muted); letter-spacing: -.03em; }
+  .btn, .seg button, .chip, .card h3, .nav nav, .soon, .sticker, .price, .promise p, .mini .t, .swatches span, .step-no { letter-spacing: -.04em; }
+
+  /* ---------- 로고 ---------- */
+  .logo { position: relative; display: inline-block; width: 82px; height: 42px; }
+  .logo i {
+    position: absolute; inset: 0; background: var(--ink-soft);
+    -webkit-mask: url(assets/wordmark_ink.png) center / contain no-repeat; mask: url(assets/wordmark_ink.png) center / contain no-repeat;
+  }
+  .logo i.dot { background: var(--tang-s); -webkit-mask-image: url(assets/wordmark_dot.png); mask-image: url(assets/wordmark_dot.png); }
+
+  /* ---------- 헤더 ---------- */
+  header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--desk) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .nav { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .nav nav { display: flex; gap: 22px; margin-left: auto; font-family: var(--f-display); font-size: 20px; }
+  .nav nav a { text-decoration: none; color: var(--ink-soft); }
+  .nav nav a:hover { color: var(--ink); }
+  .soon {
+    font-family: var(--f-display); font-size: 17px; color: var(--sage-i); background: var(--sage);
+    padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+  }
+  @media (max-width: 720px) { .nav nav { display: none; } .soon { margin-left: auto; } }
+
+  /* ---------- 히어로 ---------- */
+  .hero { padding: 40px 0 64px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1.08fr; gap: 48px; align-items: center; }
+  .hero h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(46px, 7vw, 76px); line-height: 1.08; letter-spacing: -.13em; margin-top: 10px; }
+  .hero h1 .mark { background: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 90%, transparent 90%); padding: 0 4px; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero .small { margin-top: 18px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+  .tablet { padding: 16px; border-radius: 34px 30px 36px 28px / 28px 36px 30px 34px; background: var(--desk); }
+  .tablet::before { border-width: 2.5px; }
+  .tablet-screen { position: relative; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: #FBF6EC; box-shadow: inset 0 0 0 1.5px rgba(91, 70, 54, .25); }
+  .demo-page {
+    position: absolute; inset: 0; padding: 7% 8% 0 14%;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--row) - 1.5px), #D9CDB6 calc(var(--row) - 1.5px) var(--row));
+    --row: clamp(40px, 7.2vw, 64px);
+    background-position: 0 calc(7% + 0px);
+  }
+  .demo-page::before { content: ""; position: absolute; left: 10%; top: 0; bottom: 0; width: 2px; background: rgba(242, 167, 161, .75); }
+  .demo-head { font-family: var(--f-display); color: #8A7F6F; font-size: clamp(14px, 1.8vw, 18px); height: var(--row); display: flex; align-items: flex-end; padding-bottom: 6px; }
+  .demo-line { position: relative; height: var(--row); font-family: var(--f-hand); font-size: calc(var(--row) * .66); line-height: var(--row); white-space: nowrap; }
+  .demo-line .guide { color: rgba(91, 70, 54, .22); }
+  .demo-line .ink { position: absolute; inset: 0; color: #3B3A36; clip-path: inset(0 100% 0 0); }
+  .demo-line .meaning { font-family: var(--f-body); font-size: calc(var(--row) * .26); color: #8A7F6F; }
+  .pencil { position: absolute; width: clamp(40px, 6vw, 58px); left: 0; top: 0; transform: translate(-6px, -78%) rotate(0deg); opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .demo-stamp {
+    position: absolute; right: 7%; bottom: 9%; width: 26%; aspect-ratio: 1; display: grid; place-items: center; text-align: center;
+    font-family: var(--f-display); font-weight: 700; color: #B5553F; font-size: clamp(13px, 1.8vw, 19px); line-height: 1.15;
+    border: 3px solid #B5553F; border-radius: 50%; transform: rotate(-12deg) scale(.6); opacity: 0; filter: url(#rough);
+    transition: transform .45s cubic-bezier(.3, 1.6, .5, 1), opacity .3s;
+  }
+  .demo-stamp.on { opacity: .85; transform: rotate(-12deg) scale(1); }
+  .sticker {
+    position: absolute; z-index: 2; font-family: var(--f-display); font-weight: 700; font-size: 18px; padding: 8px 16px; white-space: nowrap;
+  }
+  .sticker.streak { left: 6%; bottom: -16px; background: var(--sage); transform: rotate(-4deg); }
+  .sticker.sound { right: -10px; top: 12%; background: var(--sky); transform: rotate(5deg); display: flex; align-items: center; gap: 6px; }
+  .sticker svg { width: 20px; height: 20px; }
+  .hero-art { position: relative; }
+  @media (max-width: 560px) { .sticker { font-size: 15px; padding: 6px 12px; } .sticker.sound { right: -4px; } }
+
+  /* ---------- 써 보기 ---------- */
+  .try-card { margin-top: 32px; padding: var(--pad); }
+  .try-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .seg { position: relative; display: inline-flex; padding: 4px; gap: 2px; background: var(--desk); border-radius: 16px 13px 17px 12px / 12px 17px 13px 16px; }
+  .seg::before { content: ""; position: absolute; inset: 0; border: 2px solid var(--line); border-radius: inherit; filter: url(#rough); pointer-events: none; }
+  .seg button { position: relative; height: 38px; padding: 0 14px; border-radius: 12px 10px 13px 9px / 9px 13px 10px 12px; font-family: var(--f-display); font-size: 19px; color: var(--muted); white-space: nowrap; }
+  .seg button[aria-selected="true"] { background: var(--card); color: var(--ink); box-shadow: 1px 2px 0 var(--shadow); }
+  .try-bar .tools { display: flex; gap: 8px; margin-left: auto; }
+  @media (max-width: 640px) { .try-bar .tools { margin-left: 0; } .seg button { padding: 0 10px; font-size: 17px; } }
+
+  .sheet {
+    --row: clamp(50px, 8.2vw, 78px);
+    --paper-c: #FBF6EC; --rule-c: #D9CDB6; --margin-c: rgba(242, 167, 161, .75); --guide-c: rgba(91, 70, 54, .2); --head-c: #8A7F6F; --ink-c: #3B3A36;
+    position: relative; margin-top: 18px; border-radius: 16px; overflow: hidden; touch-action: none;
+    background-color: var(--paper-c);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--row) - 1.5px), var(--rule-c) calc(var(--row) - 1.5px) var(--row));
+    box-shadow: inset 0 0 0 1.5px rgba(91, 70, 54, .22);
+    padding: 0 6% 0 12%;
+    user-select: none; -webkit-user-select: none;
+  }
+  .sheet::before { content: ""; position: absolute; left: 8.5%; top: 0; bottom: 0; width: 2px; background: var(--margin-c); }
+  .sheet[data-paper="hanji"] { --paper-c: #F2E8D5; --rule-c: #D3C2A1; --margin-c: transparent; --guide-c: rgba(74, 63, 51, .22); --head-c: #8C7A62; --ink-c: #2A2724; }
+  .sheet[data-paper="hanji"]::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .09' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .35 -.05'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .sheet[data-paper="kraft"] {
+    --paper-c: #E5D2B2; --rule-c: transparent; --margin-c: transparent; --guide-c: rgba(60, 50, 38, .24); --head-c: #6E5A40; --ink-c: #2F4858;
+    background-image: radial-gradient(circle, #A08663 1.4px, transparent 1.6px);
+    background-size: calc(var(--row) / 2) calc(var(--row) / 2); background-position: calc(var(--row) / 4) calc(var(--row) / 4 - 1px);
+  }
+  .sheet[data-paper="night"] { --paper-c: #2E2823; --rule-c: #4D443B; --margin-c: rgba(154, 106, 72, .6); --guide-c: rgba(230, 211, 176, .2); --head-c: #A79B8A; --ink-c: #EDE4D3; }
+  .sheet .row { position: relative; height: var(--row); line-height: var(--row); white-space: nowrap; }
+  .sheet .head { font-family: var(--f-display); font-size: calc(var(--row) * .3); color: var(--head-c); display: flex; align-items: flex-end; line-height: 1.2; padding-bottom: 8px; }
+  .sheet .guide { font-family: var(--f-hand); font-size: calc(var(--row) * .68); color: var(--guide-c); }
+  .sheet[data-lang="en"] .guide { font-family: var(--f-hand-en); font-size: calc(var(--row) * .5); }
+  .sheet .meaning { font-size: calc(var(--row) * .24); color: var(--head-c); }
+  .sheet canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  .stamp {
+    position: absolute; right: 6%; bottom: calc(var(--row) * .35); width: clamp(92px, 16vw, 140px); aspect-ratio: 1; display: grid; place-items: center; text-align: center;
+    font-family: var(--f-display); font-weight: 700; color: #B5553F; font-size: clamp(18px, 2.5vw, 24px); line-height: 1.1; letter-spacing: -.06em;
+    border: 3px solid #B5553F; border-radius: 50%; filter: url(#rough); pointer-events: none;
+    opacity: 0; transform: rotate(-12deg) scale(.5); transition: transform .45s cubic-bezier(.3, 1.6, .5, 1), opacity .3s;
+  }
+  .stamp small { display: block; font-size: .72em; font-weight: 400; }
+  .stamp.on { opacity: .88; transform: rotate(-12deg) scale(1); }
+  .try-foot { display: flex; align-items: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
+  .swatches { display: flex; align-items: center; gap: 10px; }
+  .swatches span { font-family: var(--f-display); font-size: 18px; color: var(--muted); margin-right: 2px; }
+  .swatch {
+    position: relative; width: 38px; height: 38px; border-radius: 50% 45% 52% 47% / 47% 52% 45% 50%;
+    box-shadow: 1px 2px 0 var(--shadow);
+  }
+  .swatch::before { content: ""; position: absolute; inset: 0; border: 2px solid var(--line); border-radius: inherit; filter: url(#rough); }
+  .swatch[aria-pressed="true"]::after { content: ""; position: absolute; inset: -7px; border: 2px dashed var(--tang-s); border-radius: 50%; }
+  .swatch[data-paper="cream"] { background: repeating-linear-gradient(#FBF6EC 0 8px, #D9CDB6 8px 9.5px); }
+  .swatch[data-paper="hanji"] { background: #F2E8D5; }
+  .swatch[data-paper="kraft"] { background: radial-gradient(circle, #A08663 1.2px, transparent 1.4px) 0 0 / 7px 7px, #E5D2B2; }
+  .swatch[data-paper="night"] { background: repeating-linear-gradient(#2E2823 0 8px, #4D443B 8px 9.5px); }
+  .try-foot .done { margin-left: auto; }
+  .try-note { margin-top: 14px; font-size: 14px; color: var(--muted); min-height: 1.7em; }
+  @media (max-width: 640px) { .try-foot .done { margin-left: 0; width: 100%; } }
+
+  /* ---------- 카드 줄 ---------- */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); margin-top: 32px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); margin-top: 32px; }
+  @media (max-width: 860px) { .grid3, .grid2 { grid-template-columns: 1fr; } }
+  .card { padding: var(--pad); height: 100%; display: flex; flex-direction: column; }
+  .card h3 { font-family: var(--f-display); font-weight: 700; font-size: 26px; line-height: 1.2; margin-top: 14px; }
+  .card p { color: var(--ink-soft); font-size: 15.5px; margin-top: 8px; }
+  .badge {
+    width: 56px; height: 56px; display: grid; place-items: center; border-radius: 48% 52% 46% 54% / 54% 46% 52% 48%;
+    position: relative; flex: none;
+  }
+  .badge::before { content: ""; position: absolute; inset: 0; border: 2px solid var(--line); border-radius: inherit; filter: url(#rough); }
+  .badge svg { width: 28px; height: 28px; }
+  .step-no { font-family: var(--f-display); font-size: 18px; color: var(--muted); margin-left: auto; }
+  .card-top { display: flex; align-items: center; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 16px; }
+  .chip { font-family: var(--f-display); font-size: 17px; padding: 2px 12px; border-radius: 999px; background: var(--desk); color: var(--ink-soft); border: 1.5px solid var(--rule); white-space: nowrap; }
+  .chip.free { background: var(--sage); color: var(--sage-i); border-color: transparent; }
+
+  /* ---------- iPhone ---------- */
+  .phone-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  @media (max-width: 860px) { .phone-row { grid-template-columns: 1fr; } }
+  .phone { width: min(280px, 78vw); margin: 0 auto; padding: 12px; border-radius: 44px 40px 46px 38px / 38px 46px 40px 44px; background: var(--desk); }
+  .phone::before { border-width: 2.5px; }
+  .phone-screen { border-radius: 32px; background: var(--paper); padding: 34px 16px 18px; box-shadow: inset 0 0 0 1.5px var(--rule); display: grid; gap: 12px; }
+  .mini { padding: 14px 16px; border-radius: 18px 14px 20px 13px / 13px 20px 14px 18px; }
+  .mini .t { font-family: var(--f-display); font-size: 15px; color: var(--muted); }
+  .mini .v { font-family: var(--f-hand); font-size: 26px; line-height: 1.2; color: var(--ink); margin-top: 2px; }
+  .mini .r { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .dots { display: flex; justify-content: space-between; margin-top: 8px; }
+  .dots b { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--rule); display: grid; place-items: center; font-size: 12px; color: var(--sage-i); }
+  .dots b.on { background: var(--sage-s); border-color: var(--sage-s); color: #fff; }
+  .sync-list { list-style: none; margin-top: 22px; display: grid; gap: 12px; }
+  .sync-list li { display: flex; gap: 12px; align-items: flex-start; color: var(--ink-soft); }
+  .sync-list svg { flex: none; width: 24px; height: 24px; margin-top: 2px; }
+
+  /* ---------- 요금 ---------- */
+  .price { font-family: var(--f-display); font-weight: 700; font-size: 34px; line-height: 1.1; margin-top: 6px; }
+  .price small { font-size: 18px; font-weight: 400; color: var(--muted); }
+  .plan-list { list-style: none; margin-top: 14px; display: grid; gap: 8px; }
+  .plan-list li { position: relative; padding-left: 22px; color: var(--ink-soft); font-size: 15px; }
+  .plan-list li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 10px; height: 6px; border-left: 2px solid var(--sage-s); border-bottom: 2px solid var(--sage-s); transform: rotate(-45deg); }
+  .card.plus { background: var(--mustard); }
+  .card.plus .plan-list li::before { border-color: var(--tang-i); }
+  .promise {
+    margin-top: var(--gap); padding: 18px var(--pad); display: flex; gap: 14px; align-items: center; background: var(--sage);
+  }
+  .promise p { font-family: var(--f-display); font-size: 21px; color: var(--sage-i); line-height: 1.35; }
+  .promise svg { flex: none; width: 32px; height: 32px; }
+  .fine { margin-top: 12px; font-size: 13px; color: var(--muted); }
+
+  /* ---------- 마무리 ---------- */
+  .closing { text-align: center; padding: 88px 0 96px; }
+  .closing .app-icon { width: 112px; height: 112px; margin: 0 auto; border-radius: 26px; box-shadow: 3px 5px 0 var(--shadow), 0 0 0 1.5px rgba(91, 70, 54, .18); }
+  .closing .h-title { margin-top: 24px; }
+  .closing .lede { margin: 12px auto 0; }
+  .closing .actions { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+
+  footer { border-top: 2px dashed var(--rule); padding: 32px 0 48px; font-size: 14px; color: var(--muted); }
+  .f-row { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+  .f-copy { margin-left: auto; }
+  .f-note { margin-top: 14px; font-size: 12.5px; line-height: 1.6; }
+  @media (max-width: 560px) { .f-copy { margin-left: 0; } }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="Pilsa 처음으로"><i></i><i class="dot"></i></a>
+    <nav aria-label="바로가기">
+      <a href="#try">써 보기</a>
+      <a href="#inside">담긴 것</a>
+      <a href="#iphone">iPhone</a>
+      <a href="#price">요금</a>
+    </nav>
+    <span class="soon">App Store 준비 중</span>
+  </div>
+</header>
+
+<main id="top">
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">iPad와 Apple Pencil로 쓰는 필사 노트</p>
+        <h1>좋은 문장을<br><span class="mark">손으로 천천히</span></h1>
+        <p class="lede">흐린 글씨 위에 한 줄씩 따라 쓰다 보면 마음이 조용해져요. 말씀도, 영어 문장도 같은 노트에 옮겨 적어요.</p>
+        <div class="actions">
+          <a class="btn primary" href="#try">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c2-.5 3.5-1.5 5-3L19 7a2.1 2.1 0 0 0-3-3L6 14c-1.5 1.5-2.5 3-3 5z"/><path d="M14 6l3 3"/></svg>
+            여기서 한 줄 써 보기
+          </a>
+          <a class="btn quiet" href="#price">요금 보기</a>
+        </div>
+        <p class="small">로그인 없이 바로 써요. 기록은 내 iCloud에만 남아요.</p>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="doodle tablet">
+          <div class="tablet-screen">
+            <div class="demo-page" id="demo">
+              <div class="demo-head">시편 23:1 개역한글</div>
+              <div class="demo-line"><span class="guide">여호와는 나의 목자시니</span><span class="ink">여호와는 나의 목자시니</span></div>
+              <div class="demo-line"><span class="guide">내가 부족함이 없으리로다</span><span class="ink">내가 부족함이 없으리로다</span></div>
+              <div class="demo-line"><span class="meaning">The LORD is my shepherd; I shall not want.</span></div>
+              <svg class="pencil" id="pencil" viewBox="0 0 64 64" fill="none" stroke="#5B4636" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 54l4-14L44 10l10 10-30 30z" fill="#F6C667"/><path d="M14 40l10 10" /><path d="M10 54l4-14 10 10z" fill="#F3D7B0"/><path d="M10 54l2.2-7.6 5.4 5.4z" fill="#3B3A36"/><path d="M40 14l10 10" /><path d="M44 10l10 10 3-3a3 3 0 0 0 0-4.2l-5.8-5.8a3 3 0 0 0-4.2 0z" fill="#F2A7A1"/></svg>
+              <div class="demo-stamp" id="demoStamp">오늘도<br>한 장</div>
+            </div>
+          </div>
+        </div>
+        <div class="doodle sticker streak">연속 6일</div>
+        <div class="doodle sticker sound">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 .5-8 5.5 5.5 0 0 1 10.5 1.5A3.5 3.5 0 0 1 17.5 15z"/><path d="M9 18l-1 2M13 18l-1 2M17 18l-1 2"/></svg>
+          빗소리
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 써 보기 -->
+  <section id="try">
+    <div class="wrap reveal">
+      <h2 class="h-title"><span class="squiggle">여기서 한 줄 써 보세요</span></h2>
+      <p class="lede">마우스나 손가락으로 흐린 글씨 위를 따라 써 보세요. iPad라면 Apple Pencil 필압도 느껴져요.</p>
+
+      <div class="doodle try-card">
+        <div class="try-bar">
+          <div class="seg" role="tablist" aria-label="문장 고르기">
+            <button role="tab" aria-selected="true" data-text="krv">말씀</button>
+            <button role="tab" aria-selected="false" data-text="kjv">영어 말씀</button>
+            <button role="tab" aria-selected="false" data-text="affirm">영어 확언</button>
+          </div>
+          <div class="tools">
+            <button class="icon-btn" id="speakBtn" aria-pressed="false" aria-label="소리 내어 읽기" title="듣기">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+            </button>
+            <button class="icon-btn" id="rainBtn" aria-pressed="false" aria-label="빗소리" title="빗소리">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 14a4 4 0 0 1 .5-8 5.5 5.5 0 0 1 10.5 1.5A3.5 3.5 0 0 1 17.5 14z"/><path d="M9 17l-1 3M13 17l-1 3M17 17l-1 3"/></svg>
+            </button>
+            <button class="icon-btn" id="clearBtn" aria-label="지우기" title="지우기">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h12"/><path d="M4.5 15.5l9-9a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L11 19H8z"/><path d="M9 11l4.5 4.5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="sheet" id="sheet" data-paper="cream" data-lang="ko">
+          <div class="row head" id="sheetHead">시편 23:1 개역한글</div>
+          <div class="row"><span class="guide" id="g1">여호와는 나의 목자시니</span></div>
+          <div class="row"><span class="guide" id="g2">내가 부족함이 없으리로다</span></div>
+          <div class="row"><span class="meaning" id="gm">The LORD is my shepherd; I shall not want.</span></div>
+          <div class="row"></div>
+          <canvas id="canvas" aria-label="따라 쓰는 곳"></canvas>
+          <div class="stamp" id="stamp">오늘도<br>한 장<small id="stampDate"></small></div>
+        </div>
+
+        <div class="try-foot">
+          <div class="swatches" role="group" aria-label="종이">
+            <span>종이</span>
+            <button class="swatch" data-paper="cream" aria-pressed="true" aria-label="크림 노트" title="크림 노트"></button>
+            <button class="swatch" data-paper="hanji" aria-pressed="false" aria-label="한지" title="한지"></button>
+            <button class="swatch" data-paper="kraft" aria-pressed="false" aria-label="크라프트 노트" title="크라프트 노트"></button>
+            <button class="swatch" data-paper="night" aria-pressed="false" aria-label="등불 아래" title="등불 아래"></button>
+          </div>
+          <button class="btn primary done" id="doneBtn">다 썼어요</button>
+        </div>
+      </div>
+      <p class="try-note" id="tryNote" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- 하루 흐름 -->
+  <section id="flow">
+    <div class="wrap reveal">
+      <h2 class="h-title"><span class="squiggle">하루 한 장이면 충분해요</span></h2>
+      <p class="lede">무엇을 쓸지 고민하지 않아도 돼요. 앱을 열면 오늘의 문장이 기다리고 있어요.</p>
+      <div class="grid3">
+        <div class="doodle card">
+          <div class="card-top">
+            <div class="badge" style="background:var(--mustard)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg></div>
+            <span class="step-no">하나</span>
+          </div>
+          <h3>오늘의 문장을 펼쳐요</h3>
+          <p>매일 새 구절이 하나씩 열려요. 소리를 켜고 한 번 들어 보면 더 차분해져요.</p>
+        </div>
+        <div class="doodle card">
+          <div class="card-top">
+            <div class="badge" style="background:var(--sky)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c2-.5 3.5-1.5 5-3L19 7a2.1 2.1 0 0 0-3-3L6 14c-1.5 1.5-2.5 3-3 5z"/><path d="M14 6l3 3"/></svg></div>
+            <span class="step-no">둘</span>
+          </div>
+          <h3>천천히 따라 써요</h3>
+          <p>흐린 글씨 위에 덧쓰다가, 익숙해지면 보고 쓰고, 가린 채 기억으로도 써요.</p>
+        </div>
+        <div class="doodle card">
+          <div class="card-top">
+            <div class="badge" style="background:var(--peach)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+            <span class="step-no">셋</span>
+          </div>
+          <h3>기록장에 모여요</h3>
+          <p>다 쓴 페이지는 날짜와 함께 카드로 남아요. 쌓인 장수를 넘겨 보는 재미가 있어요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 담긴 것 -->
+  <section id="inside">
+    <div class="wrap reveal">
+      <h2 class="h-title"><span class="squiggle">노트 안에 담긴 것</span></h2>
+      <p class="lede">좋아하는 문장을 고르고, 쓰는 방식과 종이, 소리를 내 마음대로 바꿔요.</p>
+      <div class="grid2">
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg></div></div>
+          <h3>말씀</h3>
+          <p>개역한글과 King James Version을 고치지 않고 실었어요. 시편 23편, 팔복, 잠언, 사랑장을 날짜별로 나눠 두었어요.</p>
+          <div class="chips"><span class="chip free">시편 23편 7일 무료</span><span class="chip">쉼과 위로 14일</span><span class="chip">영어로 쓰는 말씀 21일</span></div>
+        </div>
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--tang)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.7-7 10-7 10z"/></svg></div></div>
+          <h3>영어 확언</h3>
+          <p>Pilsa가 직접 쓴 짧은 영어 문장이에요. 한글 뜻과 단어 풀이를 보며 따라 쓰고, 원어민 발음으로 들어요.</p>
+          <div class="chips"><span class="chip free">영어 확언 7일 무료</span><span class="chip">영어 확언 30일</span></div>
+        </div>
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--sky)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M16 16.5l2 2 3.5-4"/></svg></div></div>
+          <h3>다섯 가지 쓰기</h3>
+          <p>따라쓰기와 보고쓰기는 늘 무료예요. 다른 모드는 오늘의 문장에서 먼저 한 번 써 볼 수 있어요.</p>
+          <div class="chips"><span class="chip free">따라쓰기</span><span class="chip free">보고쓰기</span><span class="chip">암송쓰기</span><span class="chip">듣고쓰기</span><span class="chip">영어 학습</span></div>
+        </div>
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--mustard)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></div></div>
+          <h3>종이와 소리</h3>
+          <p>크림 노트부터 원고지, 한지, 등불 아래까지. 빗소리와 시냇물은 녹음 없이 기기에서 만들어 끊김 없이 흘러요.</p>
+          <div class="chips"><span class="chip free">크림 노트</span><span class="chip free">빗소리</span><span class="chip">원고지</span><span class="chip">한지</span><span class="chip">시냇물</span><span class="chip">난롯불</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- iPhone -->
+  <section id="iphone">
+    <div class="wrap phone-row reveal">
+      <div>
+        <h2 class="h-title"><span class="squiggle">iPhone은 가볍게</span></h2>
+        <p class="lede">쓰는 건 iPad에서, 확인은 iPhone에서. 같은 iCloud 계정이면 따로 설정하지 않아도 이어져요.</p>
+        <ul class="sync-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>오늘의 문장을 듣고, 잠깐 읽어 봐요</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>연속 기록과 이어서 쓸 팩이 그대로 보여요</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>로그인이나 가입은 없어요</li>
+        </ul>
+      </div>
+      <div class="doodle phone" aria-hidden="true">
+        <div class="phone-screen">
+          <div class="doodle mini">
+            <div class="t">오늘의 말씀</div>
+            <div class="v">내 영혼을 소생시키시고</div>
+            <div class="r">시편 23:3</div>
+          </div>
+          <div class="doodle mini">
+            <div class="t">연속 6일</div>
+            <div class="dots"><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b></b></div>
+          </div>
+          <div class="doodle mini" style="background:var(--sage)">
+            <div class="t" style="color:var(--sage-i)">이어서 쓰기</div>
+            <div class="v" style="font-size:22px">영어 확언 7일</div>
+            <div class="r">4일째</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 요금 -->
+  <section id="price">
+    <div class="wrap reveal">
+      <h2 class="h-title"><span class="squiggle">마음 편한 요금</span></h2>
+      <p class="lede">무료로도 매일 쓸 수 있어요. 더 쓰고 싶어지면 필요한 것만 소장하거나 한 번에 열어요.</p>
+      <div class="grid3">
+        <div class="doodle card">
+          <p class="eyebrow">무료</p>
+          <div class="price">₩0</div>
+          <ul class="plan-list">
+            <li>매일 오늘의 말씀과 오늘의 확언</li>
+            <li>시편 23편 7일, 영어 확언 7일</li>
+            <li>따라쓰기, 보고쓰기</li>
+            <li>크림 노트와 빗소리</li>
+          </ul>
+        </div>
+        <div class="doodle card">
+          <p class="eyebrow">마음에 드는 것만</p>
+          <div class="price">₩2,900<small> 부터</small></div>
+          <ul class="plan-list">
+            <li>필사 팩 ₩4,400부터</li>
+            <li>쓰기 모드 ₩5,900</li>
+            <li>종이 ₩2,900부터, 소리 팩 ₩3,900</li>
+            <li>한 번 사면 계속 내 것이에요</li>
+          </ul>
+        </div>
+        <div class="doodle card plus">
+          <p class="eyebrow">Pilsa Plus</p>
+          <div class="price">₩39,000<small> 1년</small></div>
+          <ul class="plan-list">
+            <li>모든 팩, 모드, 종이, 소리</li>
+            <li>7일 동안 무료로 먼저 써 봐요</li>
+            <li>한 달씩은 ₩4,900, 평생 이용은 ₩79,000</li>
+            <li>12개월 구독할 때마다 팩 하나를 골라 영원히 소장해요</li>
+          </ul>
+        </div>
+      </div>
+      <div class="doodle promise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-i)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.5-3 8-7 9.5-4-1.5-7-5-7-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+        <p>구독을 멈춰도 내가 쓴 페이지와 소장한 것은 그대로 남아요.</p>
+      </div>
+      <p class="fine">출시 전 가격이라 조금 달라질 수 있어요. 결제와 해지는 Apple 계정에서 관리해요.</p>
+    </div>
+  </section>
+
+  <!-- 마무리 -->
+  <section class="closing">
+    <div class="wrap reveal">
+      <img class="app-icon" src="icon.png" alt="Pilsa 앱 아이콘" width="112" height="112">
+      <h2 class="h-title">곧 App Store에서 만나요</h2>
+      <p class="lede">출시되면 이 페이지에 바로 링크를 걸어 둘게요.</p>
+      <div class="actions">
+        <a class="btn primary" href="#try">한 줄 더 써 보기</a>
+        <a class="btn quiet" href="mailto:forgelab.aitech@gmail.com?subject=%5BPilsa%5D%20%EB%AC%B8%EC%9D%98">문의하기</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-row">
+      <span class="logo" aria-hidden="true" style="width:64px;height:33px"><i></i><i class="dot"></i></span>
+      <a href="privacy/">개인정보 처리방침</a>
+      <a href="terms/">이용약관</a>
+      <a href="mailto:forgelab.aitech@gmail.com?subject=%5BPilsa%5D%20%EB%AC%B8%EC%9D%98">문의 forgelab.aitech@gmail.com</a>
+      <span class="f-copy">© 2026 ForgeLab</span>
+    </div>
+    <p class="f-note">성경 본문은 저작권이 끝난 개역한글판과 King James Version을 고치지 않고 싣습니다. 팩 구성, 질문, 단어 풀이, 확언 문장은 Pilsa가 직접 썼습니다. iPad, iPhone, Apple Pencil, iCloud는 Apple Inc.의 상표입니다.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- 나타나기 ---------- */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  /* ---------- 히어로: 연필이 한 줄씩 쓴다 ---------- */
+  const demo = document.getElementById("demo");
+  const pencil = document.getElementById("pencil");
+  const demoStamp = document.getElementById("demoStamp");
+  const inks = [...demo.querySelectorAll(".demo-line .ink")];
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function writeLine(ink, duration) {
+    return new Promise((resolve) => {
+      const line = ink.parentElement;
+      const guide = line.querySelector(".guide");
+      const width = guide.getBoundingClientRect().width;
+      const start = performance.now();
+      pencil.style.opacity = 1;
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        const pct = 100 - eased * 100;
+        ink.style.clipPath = `inset(0 ${pct}% 0 0)`;
+        const x = line.offsetLeft + width * eased;
+        const bob = Math.sin(now / 70) * 3;
+        pencil.style.left = `${x}px`;
+        pencil.style.top = `${line.offsetTop + line.offsetHeight * .72 + bob}px`;
+        if (t < 1) requestAnimationFrame(frame); else resolve();
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+
+  async function loopDemo() {
+    if (reduce) {
+      inks.forEach((i) => (i.style.clipPath = "inset(0 0 0 0)"));
+      demoStamp.classList.add("on");
+      return;
+    }
+    while (true) {
+      inks.forEach((i) => (i.style.clipPath = "inset(0 100% 0 0)"));
+      demoStamp.classList.remove("on");
+      await wait(700);
+      for (const ink of inks) { await writeLine(ink, 2600); await wait(260); }
+      pencil.style.opacity = 0;
+      await wait(350);
+      demoStamp.classList.add("on");
+      await wait(3600);
+    }
+  }
+  document.fonts.ready.then(loopDemo);
+
+  /* ---------- 써 보기 ---------- */
+  const texts = {
+    krv: { lang: "ko", speech: "ko-KR", head: "시편 23:1 개역한글", lines: ["여호와는 나의 목자시니", "내가 부족함이 없으리로다"], meaning: "The LORD is my shepherd; I shall not want." },
+    kjv: { lang: "en", speech: "en-US", head: "Psalm 23:1 KJV", lines: ["The LORD is my shepherd;", "I shall not want."], meaning: "여호와는 나의 목자시니 내가 부족함이 없으리로다" },
+    affirm: { lang: "en", speech: "en-US", head: "완벽하지 않아도", lines: ["I do not have to be perfect", "to be loved."], meaning: "사랑받기 위해 완벽할 필요는 없다." }
+  };
+  const inkColors = { cream: "#3B3A36", hanji: "#2A2724", kraft: "#2F4858", night: "#EDE4D3" };
+
+  const sheet = document.getElementById("sheet");
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const note = document.getElementById("tryNote");
+  const stamp = document.getElementById("stamp");
+  const doneBtn = document.getElementById("doneBtn");
+  let current = "krv";
+  let strokes = [];
+  let active = null;
+  let finished = false;
+
+  function sizeCanvas() {
+    const r = sheet.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    canvas.width = Math.round(r.width * dpr);
+    canvas.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redraw();
+  }
+
+  function rowSize() { return parseFloat(getComputedStyle(sheet).getPropertyValue("--row")) || sheet.clientHeight / 5; }
+
+  function drawStroke(s, from) {
+    const W = sheet.clientWidth, H = sheet.clientHeight;
+    const base = rowSize() * 0.05;
+    const pts = s.pts;
+    ctx.strokeStyle = s.color;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    if (pts.length === 1) {
+      const p = pts[0];
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, base * (0.55 + p.p * 0.9) / 2, 0, Math.PI * 2);
+      ctx.fill();
+      return;
+    }
+    for (let i = Math.max(1, from); i < pts.length; i++) {
+      const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p2 = pts[i];
+      const m1 = { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
+      const m2 = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+      ctx.lineWidth = base * (0.55 + ((p1.p + p2.p) / 2) * 0.9);
+      ctx.beginPath();
+      ctx.moveTo(m1.x * W, m1.y * H);
+      ctx.quadraticCurveTo(p1.x * W, p1.y * H, m2.x * W, m2.y * H);
+      ctx.stroke();
+    }
+  }
+
+  function redraw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    strokes.forEach((s) => drawStroke(s, 1));
+  }
+
+  function point(e) {
+    const r = sheet.getBoundingClientRect();
+    const pressure = e.pointerType === "pen" ? (e.pressure || 0.5) : 0.5;
+    return { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height, p: pressure };
+  }
+
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    canvas.setPointerCapture(e.pointerId);
+    active = { color: inkColors[sheet.dataset.paper], pts: [point(e)] };
+    strokes.push(active);
+    drawStroke(active, 1);
+    if (finished) resetFinish();
+    note.textContent = "";
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    if (!active) return;
+    const events = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    const from = active.pts.length;
+    events.forEach((ev) => active.pts.push(point(ev)));
+    drawStroke(active, from);
+  });
+  const end = () => { active = null; };
+  canvas.addEventListener("pointerup", end);
+  canvas.addEventListener("pointercancel", end);
+
+  function resetFinish() {
+    finished = false;
+    stamp.classList.remove("on");
+    doneBtn.textContent = "다 썼어요";
+  }
+
+  function clearAll() {
+    strokes = [];
+    redraw();
+    resetFinish();
+    note.textContent = "";
+  }
+
+  document.getElementById("clearBtn").addEventListener("click", clearAll);
+
+  doneBtn.addEventListener("click", () => {
+    if (finished) { clearAll(); return; }
+    const W = sheet.clientWidth, H = sheet.clientHeight;
+    const inked = strokes.reduce((sum, s) => sum + s.pts.reduce((d, p, i) => i ? d + Math.hypot((p.x - s.pts[i - 1].x) * W, (p.y - s.pts[i - 1].y) * H) : 0, 0), 0);
+    if (inked < rowSize() * 3) {
+      note.textContent = "흐린 글씨 위에 한 줄만 먼저 써 볼까요?";
+      return;
+    }
+    const d = new Date();
+    document.getElementById("stampDate").textContent = `${d.getMonth() + 1}월 ${d.getDate()}일`;
+    stamp.classList.add("on");
+    finished = true;
+    doneBtn.textContent = "새로 쓰기";
+    note.textContent = "앱에서는 이 페이지가 날짜와 함께 기록장에 남아요.";
+  });
+
+  function setText(key) {
+    current = key;
+    const t = texts[key];
+    sheet.dataset.lang = t.lang;
+    document.getElementById("sheetHead").textContent = t.head;
+    document.getElementById("g1").textContent = t.lines[0];
+    document.getElementById("g2").textContent = t.lines[1];
+    document.getElementById("gm").textContent = t.meaning;
+    document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-selected", b.dataset.text === key));
+    stopSpeaking();
+    clearAll();
+  }
+  document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => setText(b.dataset.text)));
+
+  document.querySelectorAll(".swatch").forEach((b) => b.addEventListener("click", () => {
+    const paper = b.dataset.paper;
+    sheet.dataset.paper = paper;
+    document.querySelectorAll(".swatch").forEach((s) => s.setAttribute("aria-pressed", s === b));
+    strokes.forEach((s) => (s.color = inkColors[paper]));
+    redraw();
+  }));
+
+  /* 듣기: 브라우저에 들어 있는 음성으로 읽는다 */
+  const speakBtn = document.getElementById("speakBtn");
+  function stopSpeaking() {
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+    speakBtn.setAttribute("aria-pressed", "false");
+  }
+  if (!("speechSynthesis" in window)) speakBtn.hidden = true;
+  speakBtn.addEventListener("click", () => {
+    if (speakBtn.getAttribute("aria-pressed") === "true") { stopSpeaking(); return; }
+    const t = texts[current];
+    const u = new SpeechSynthesisUtterance(t.lines.join(" "));
+    u.lang = t.speech;
+    u.rate = t.lang === "ko" ? 0.9 : 0.85;
+    const voices = speechSynthesis.getVoices().filter((v) => v.lang.replace("_", "-").startsWith(t.speech.slice(0, 2)));
+    const preferred = voices.find((v) => /enhanced|premium|natural/i.test(v.name)) || voices.find((v) => v.localService) || voices[0];
+    if (preferred) u.voice = preferred;
+    u.onend = u.onerror = () => speakBtn.setAttribute("aria-pressed", "false");
+    speakBtn.setAttribute("aria-pressed", "true");
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  });
+
+  /* 빗소리: 녹음 없이 잡음을 걸러 만든다 */
+  const rainBtn = document.getElementById("rainBtn");
+  let audio = null;
+  function startRain() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    const ac = new AC();
+    const len = ac.sampleRate * 3;
+    const buf = ac.createBuffer(1, len, ac.sampleRate);
+    const data = buf.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < len; i++) {
+      const white = Math.random() * 2 - 1;
+      last = (last + 0.02 * white) / 1.02;
+      data[i] = white * 0.55 + last * 3.2;
+    }
+    const src = ac.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    const hp = ac.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 380;
+    const lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 5200;
+    const master = ac.createGain(); master.gain.value = 0;
+    src.connect(hp).connect(lp).connect(master).connect(ac.destination);
+    src.start();
+    master.gain.linearRampToValueAtTime(0.14, ac.currentTime + 1.6);
+
+    const drops = setInterval(() => {
+      const n = 1 + Math.floor(Math.random() * 3);
+      for (let k = 0; k < n; k++) {
+        const t0 = ac.currentTime + Math.random() * 0.25;
+        const b = ac.createBufferSource();
+        b.buffer = buf;
+        const bp = ac.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 1800 + Math.random() * 3200; bp.Q.value = 6;
+        const g = ac.createGain();
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(0.05 + Math.random() * 0.05, t0 + 0.004);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.06);
+        b.connect(bp).connect(g).connect(master);
+        b.start(t0, Math.random() * 2, 0.08);
+      }
+    }, 140);
+    audio = { ac, master, drops };
+    return true;
+  }
+  function stopRain() {
+    if (!audio) return;
+    const { ac, master, drops } = audio;
+    clearInterval(drops);
+    master.gain.cancelScheduledValues(ac.currentTime);
+    master.gain.setValueAtTime(master.gain.value, ac.currentTime);
+    master.gain.linearRampToValueAtTime(0, ac.currentTime + 0.8);
+    setTimeout(() => ac.close(), 900);
+    audio = null;
+  }
+  rainBtn.addEventListener("click", () => {
+    if (audio) { stopRain(); rainBtn.setAttribute("aria-pressed", "false"); }
+    else if (startRain()) rainBtn.setAttribute("aria-pressed", "true");
+  });
+
+  new ResizeObserver(sizeCanvas).observe(sheet);
+  document.fonts.ready.then(sizeCanvas);
+})();
+</script>
+</body>
+</html>
