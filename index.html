@@ -254,7 +254,9 @@
   .chip { font-family: var(--f-display); font-size: 17px; padding: 2px 12px; border-radius: 999px; background: var(--desk); color: var(--ink-soft); border: 1.5px solid var(--rule); white-space: nowrap; }
   .chip.free { background: var(--sage); color: var(--sage-i); border-color: transparent; }
 
-  /* ---------- iPhone ---------- */
+  /* ---------- 보관 ---------- */
+  .keep { width: min(320px, 82vw); margin: 0 auto; padding: 18px; display: grid; gap: 12px; }
+  .keep::before { border-width: 2.5px; }
   .phone-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
   @media (max-width: 860px) { .phone-row { grid-template-columns: 1fr; } }
   .phone { width: min(280px, 78vw); margin: 0 auto; padding: 12px; border-radius: 44px 40px 46px 38px / 38px 46px 40px 44px; background: var(--desk); }
@@ -324,7 +326,7 @@
     <nav aria-label="바로가기">
       <a href="#try">써 보기</a>
       <a href="#inside">담긴 것</a>
-      <a href="#iphone">iPhone</a>
+      <a href="#keep">보관</a>
       <a href="#price">요금</a>
     </nav>
     <span class="soon">App Store 준비 중</span>
@@ -338,7 +340,7 @@
       <div>
         <p class="eyebrow">iPad와 Apple Pencil로 쓰는 필사 노트</p>
         <h1>좋은 문장을<br><span class="mark">손으로 천천히</span></h1>
-        <p class="lede">흐린 글씨 위에 한 줄씩 따라 쓰다 보면 마음이 조용해져요. 말씀도, 영어 문장도 같은 노트에 옮겨 적어요.</p>
+        <p class="lede">흐린 글씨 위에 한 줄씩 따라 쓰다 보면 마음이 조용해져요. 말씀도, 사경도, 영어 문장도 같은 노트에 옮겨 적어요.</p>
         <div class="actions">
           <a class="btn primary" href="#try">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c2-.5 3.5-1.5 5-3L19 7a2.1 2.1 0 0 0-3-3L6 14c-1.5 1.5-2.5 3-3 5z"/><path d="M14 6l3 3"/></svg>
@@ -426,7 +428,7 @@
   <section id="flow">
     <div class="wrap reveal">
       <h2 class="h-title"><span class="squiggle">하루 한 장이면 충분해요</span></h2>
-      <p class="lede">무엇을 쓸지 고민하지 않아도 돼요. 앱을 열면 오늘의 문장이 기다리고 있어요.</p>
+      <p class="lede">무엇을 쓸지 고민하지 않아도 돼요. 앱을 열면 오늘의 문장이 기다리고 있어요. 고른 종교에 맞는 글만 보여요.</p>
       <div class="grid3">
         <div class="doodle card">
           <div class="card-top">
@@ -450,7 +452,7 @@
             <span class="step-no">셋</span>
           </div>
           <h3>기록장에 모여요</h3>
-          <p>다 쓴 페이지는 날짜와 함께 카드로 남아요. 쌓인 장수를 넘겨 보는 재미가 있어요.</p>
+          <p>다 쓴 페이지는 날짜와 함께 카드로 남아요. 스티커를 붙여 두면 카드에도 그대로 찍혀요.</p>
         </div>
       </div>
     </div>
@@ -460,64 +462,80 @@
   <section id="inside">
     <div class="wrap reveal">
       <h2 class="h-title"><span class="squiggle">노트 안에 담긴 것</span></h2>
-      <p class="lede">좋아하는 문장을 고르고, 쓰는 방식과 종이, 소리를 내 마음대로 바꿔요.</p>
+      <p class="lede">고른 종교에 맞는 글과, 종교와 상관없는 글이 함께 있어요. 쓰는 방식과 종이, 소리는 마음대로 바꿔요.</p>
       <div class="grid2">
         <div class="doodle card">
           <div class="card-top"><div class="badge" style="background:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg></div></div>
           <h3>말씀</h3>
-          <p>개역한글과 King James Version을 고치지 않고 실었어요. 시편 23편, 팔복, 잠언, 사랑장을 날짜별로 나눠 두었어요.</p>
-          <div class="chips"><span class="chip free">시편 23편 7일 무료</span><span class="chip">쉼과 위로 14일</span><span class="chip">영어로 쓰는 말씀 21일</span></div>
+          <p>개역한글과 King James Version, 천주교는 Douay-Rheims를 고치지 않고 실었어요. 시편 23편, 팔복, 잠언, 사랑장을 날짜별로 나눠 두었어요.</p>
+          <div class="chips"><span class="chip free">시편 23편 7일 무료</span><span class="chip">쉼과 위로 14일</span><span class="chip">산상수훈 14일</span></div>
+        </div>
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--peach)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1.5 3-4.5 4.5-4.5 8a4.5 4.5 0 0 0 9 0c0-3.5-3-5-4.5-8z"/><path d="M5 20h14"/></svg></div></div>
+          <h3>사경</h3>
+          <p>반야심경과 법성게를 한자 원문과 한글 독음으로 써요. 우리말 풀이는 Pilsa가 쉽게 옮겨 두었어요.</p>
+          <div class="chips"><span class="chip free">사경 첫걸음 5일 무료</span><span class="chip">반야심경 사경 10일</span><span class="chip">옛 스님의 한마디 14일</span></div>
+        </div>
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--mustard)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6h5.4c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/></svg></div></div>
+          <h3>생각</h3>
+          <p>종교와 상관없이 누구나 쓰는 묶음이에요. 아침의 다짐, 잠과 몸의 상식, 논어와 명상록에서 온 문장을 담았어요.</p>
+          <div class="chips"><span class="chip free">아침의 다짐 10일 무료</span><span class="chip">고전에서 온 문장 14일</span><span class="chip">돈과 시간의 상식 10일</span></div>
         </div>
         <div class="doodle card">
           <div class="card-top"><div class="badge" style="background:var(--tang)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.7-7 10-7 10z"/></svg></div></div>
           <h3>영어 확언</h3>
-          <p>Pilsa가 직접 쓴 짧은 영어 문장이에요. 한글 뜻과 단어 풀이를 보며 따라 쓰고, 원어민 발음으로 들어요.</p>
-          <div class="chips"><span class="chip free">영어 확언 7일 무료</span><span class="chip">영어 확언 30일</span></div>
+          <p>Pilsa가 직접 쓴 짧은 영어 문장이에요. 한글 뜻과 단어 풀이를 옆에서 보며 쓰고, 소리로도 들어요.</p>
+          <div class="chips"><span class="chip free">영어 확언 7일 무료</span><span class="chip free">한 페이지 확언 3편 무료</span><span class="chip">영어 확언 30일</span></div>
         </div>
         <div class="doodle card">
           <div class="card-top"><div class="badge" style="background:var(--sky)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/><path d="M16 16.5l2 2 3.5-4"/></svg></div></div>
-          <h3>다섯 가지 쓰기</h3>
-          <p>따라쓰기와 보고쓰기는 늘 무료예요. 다른 모드는 오늘의 문장에서 먼저 한 번 써 볼 수 있어요.</p>
-          <div class="chips"><span class="chip free">따라쓰기</span><span class="chip free">보고쓰기</span><span class="chip">암송쓰기</span><span class="chip">듣고쓰기</span><span class="chip">영어 학습</span></div>
+          <h3>네 가지 쓰기</h3>
+          <p>모두 무료예요. 같은 페이지에서 언제든 바꿔 쓸 수 있고, 쓰던 글씨는 그대로 남아요. 영어 글에는 뜻 보기를 켜요.</p>
+          <div class="chips"><span class="chip free">따라쓰기</span><span class="chip free">보고쓰기</span><span class="chip free">암송쓰기</span><span class="chip free">듣고쓰기</span><span class="chip free">영어 뜻 보기</span></div>
         </div>
         <div class="doodle card">
           <div class="card-top"><div class="badge" style="background:var(--mustard)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></div></div>
           <h3>종이와 소리</h3>
-          <p>크림 노트부터 원고지, 한지, 등불 아래까지. 빗소리와 시냇물은 녹음 없이 기기에서 만들어 끊김 없이 흘러요.</p>
-          <div class="chips"><span class="chip free">크림 노트</span><span class="chip free">빗소리</span><span class="chip">원고지</span><span class="chip">한지</span><span class="chip">시냇물</span><span class="chip">난롯불</span></div>
+          <p>크림 노트부터 원고지, 한지까지. 빗소리는 기기에서 만들고, 배경음악 여덟 곡은 따로 켜서 함께 흘려요.</p>
+          <div class="chips"><span class="chip free">크림 노트</span><span class="chip free">빗소리</span><span class="chip free">펠트 피아노</span><span class="chip free">깊은 밤</span><span class="chip">원고지</span><span class="chip">한지</span><span class="chip">오후의 카페</span></div>
+        </div>
+        <div class="doodle card">
+          <div class="card-top"><div class="badge" style="background:var(--lav, var(--sky))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg></div></div>
+          <h3>스티커</h3>
+          <p>먹물이와 사각이, 책상 위 친구들을 페이지에 붙여요. 크기와 각도, 글씨 위아래 순서까지 바꿀 수 있어요.</p>
+          <div class="chips"><span class="chip free">먹물이와 사각이</span><span class="chip free">책상 위 친구들</span><span class="chip">둘이 함께</span><span class="chip">포근한 날</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- iPhone -->
-  <section id="iphone">
+  <!-- 보관 -->
+  <section id="keep">
     <div class="wrap phone-row reveal">
       <div>
-        <h2 class="h-title"><span class="squiggle">iPhone은 가볍게</span></h2>
-        <p class="lede">쓰는 건 iPad에서, 확인은 iPhone에서. 같은 iCloud 계정이면 따로 설정하지 않아도 이어져요.</p>
+        <h2 class="h-title"><span class="squiggle">쓴 페이지는 사라지지 않아요</span></h2>
+        <p class="lede">완성한 페이지는 이 iPad와 iCloud Drive에 함께 보관돼요. 앱을 지웠다 다시 설치해도 같은 iCloud 계정이면 그대로 돌아와요.</p>
         <ul class="sync-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>오늘의 문장을 듣고, 잠깐 읽어 봐요</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>연속 기록과 이어서 쓸 팩이 그대로 보여요</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>완성 카드와 손글씨 원본까지 함께 둬요</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>설정에서 모두 내보내면 파일 하나로 받아요</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-s)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>로그인이나 가입은 없어요</li>
         </ul>
       </div>
-      <div class="doodle phone" aria-hidden="true">
-        <div class="phone-screen">
-          <div class="doodle mini">
-            <div class="t">오늘의 말씀</div>
-            <div class="v">내 영혼을 소생시키시고</div>
-            <div class="r">시편 23:3</div>
-          </div>
-          <div class="doodle mini">
-            <div class="t">연속 6일</div>
-            <div class="dots"><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b></b></div>
-          </div>
-          <div class="doodle mini" style="background:var(--sage)">
-            <div class="t" style="color:var(--sage-i)">이어서 쓰기</div>
-            <div class="v" style="font-size:22px">영어 확언 7일</div>
-            <div class="r">4일째</div>
-          </div>
+      <div class="doodle keep" aria-hidden="true">
+        <div class="doodle mini">
+          <div class="t">내 필사</div>
+          <div class="v">스물세 장</div>
+          <div class="r">9월 18일까지</div>
+        </div>
+        <div class="doodle mini" style="background:var(--sky)">
+          <div class="t">iCloud 보관</div>
+          <div class="v" style="font-size:22px">켜짐</div>
+          <div class="r">카드, 손글씨, 기록 정보</div>
+        </div>
+        <div class="doodle mini" style="background:var(--sage)">
+          <div class="t" style="color:var(--sage-i)">연속 6일</div>
+          <div class="dots"><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b class="on">✓</b><b></b></div>
         </div>
       </div>
     </div>
@@ -527,44 +545,45 @@
   <section id="price">
     <div class="wrap reveal">
       <h2 class="h-title"><span class="squiggle">마음 편한 요금</span></h2>
-      <p class="lede">무료로도 매일 쓸 수 있어요. 더 쓰고 싶어지면 필요한 것만 소장하거나 한 번에 열어요.</p>
+      <p class="lede">무료로도 매일 쓸 수 있어요. 더 쓰고 싶어지면 팩 하나만 골라도 되고, Plus로 한 번에 열어도 돼요.</p>
       <div class="grid3">
         <div class="doodle card">
           <p class="eyebrow">무료</p>
           <div class="price">₩0</div>
           <ul class="plan-list">
-            <li>매일 오늘의 말씀과 오늘의 확언</li>
-            <li>시편 23편 7일, 영어 확언 7일</li>
-            <li>따라쓰기, 보고쓰기</li>
-            <li>크림 노트와 빗소리</li>
+            <li>매일 오늘의 말씀, 한 문장, 확언</li>
+            <li>시작하기 좋은 팩 여섯 (고른 종교에 맞게)</li>
+            <li>네 가지 쓰기 방식과 영어 뜻 보기</li>
+            <li>크림 노트, 빗소리, 배경음악 세 곡</li>
+            <li>스티커 마흔네 장</li>
           </ul>
         </div>
         <div class="doodle card">
-          <p class="eyebrow">마음에 드는 것만</p>
-          <div class="price">₩2,900<small> 부터</small></div>
+          <p class="eyebrow">팩 하나만</p>
+          <div class="price">₩1,100<small> 부터</small></div>
           <ul class="plan-list">
-            <li>필사 팩 ₩4,400부터</li>
-            <li>쓰기 모드 ₩5,900</li>
-            <li>종이 ₩2,900부터, 소리 팩 ₩3,900</li>
+            <li>필사 팩 ₩1,100 또는 ₩2,200</li>
+            <li>스물두 가지 중에 골라요</li>
             <li>한 번 사면 계속 내 것이에요</li>
+            <li>구독을 안 해도 그대로 써요</li>
           </ul>
         </div>
         <div class="doodle card plus">
           <p class="eyebrow">Pilsa Plus</p>
-          <div class="price">₩39,000<small> 1년</small></div>
+          <div class="price">₩33,000<small> 1년</small></div>
           <ul class="plan-list">
-            <li>모든 팩, 모드, 종이, 소리</li>
-            <li>7일 동안 무료로 먼저 써 봐요</li>
-            <li>한 달씩은 ₩4,900, 평생 이용은 ₩79,000</li>
-            <li>12개월 구독할 때마다 팩 하나를 골라 영원히 소장해요</li>
+            <li>한 달 꼴 ₩2,750, 달마다는 ₩5,500</li>
+            <li>모든 팩이 한 번에 열려요</li>
+            <li>종이와 소리, 배경음악 여덟 곡 전부</li>
+            <li>Plus 스티커 마흔두 장</li>
           </ul>
         </div>
       </div>
       <div class="doodle promise">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--sage-i)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.5-3 8-7 9.5-4-1.5-7-5-7-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
-        <p>구독을 멈춰도 내가 쓴 페이지와 소장한 것은 그대로 남아요.</p>
+        <p>구독을 멈춰도 따로 산 팩과 내가 쓴 페이지는 그대로 남아요.</p>
       </div>
-      <p class="fine">출시 전 가격이라 조금 달라질 수 있어요. 결제와 해지는 Apple 계정에서 관리해요.</p>
+      <p class="fine">구독하는 동안에는 팩을 따로 사지 않아도 모두 열려요. 결제와 해지는 Apple 계정에서 관리해요.</p>
     </div>
   </section>
 
@@ -591,7 +610,7 @@
       <a href="mailto:forgelab.aitech@gmail.com?subject=%5BPilsa%5D%20%EB%AC%B8%EC%9D%98">문의 forgelab.aitech@gmail.com</a>
       <span class="f-copy">© 2026 ForgeLab</span>
     </div>
-    <p class="f-note">성경 본문은 저작권이 끝난 개역한글판과 King James Version을 고치지 않고 싣습니다. 팩 구성, 질문, 단어 풀이, 확언 문장은 Pilsa가 직접 썼습니다. iPad, iPhone, Apple Pencil, iCloud는 Apple Inc.의 상표입니다.</p>
+    <p class="f-note">성경 본문은 저작권이 끝난 개역한글판과 King James Version, Douay-Rheims를 고치지 않고 싣습니다. 경전은 저작권이 끝난 한문 원문과 사찰에서 읽는 한글 독음으로 싣고, 우리말 풀이는 Pilsa가 직접 썼습니다. 팩 구성, 질문, 단어 풀이, 확언과 생각 문장도 Pilsa가 직접 썼습니다. 낭독은 사람이 아닌 AI가 만든 음성이고, 캐릭터와 스티커, 배경음악도 Pilsa가 생성 모델로 만들었습니다. iPad, Apple Pencil, iCloud는 Apple Inc.의 상표입니다.</p>
   </div>
 </footer>
 
